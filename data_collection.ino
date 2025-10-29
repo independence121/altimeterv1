@@ -3,13 +3,10 @@
 #include <Wire.h>
 #include <Adafruit_BMP280.h>
 
-Adafruit_MPU6050 mpu;
-TinyGPSPlus gps;
 Adafruit_BMP280 bmp;
 Adafruit_ADXL375 accel = Adafruit_ADXL375(12345);
 
-const byte rxRadio = D3, txRadio = D4;
-const byte rxInGPS = D10, txOutGPS = D11;
+int lastTime;
 
 void setup(void) {
   Serial.begin(9600);
@@ -21,17 +18,13 @@ void setup(void) {
   }
   if (!accel.begin()) {
     /* There was a problem detecting the ADXL375 ... check your connections */
-    Serial.println("Ooops, no ADXL375 detected ... Check your wiring!");
+    Serial.println("No ADXL375 detected");
     while (1)
       ;
   }
-
-  delay(100);
-
   if (!bmp.begin()) {
-    Serial.println(F("Could not find a valid BMP280 sensor, check wiring or "
-                     "try a different address!"));
-    while (1) delay(10);
+    Serial.println(F("No BMP280 detected"));
+    while (1);
   }
 
   /* Default settings from datasheet. */
@@ -43,15 +36,11 @@ void setup(void) {
 }
 
 void loop() {
-  //height = 0;
-  //current_altitude = [ratio] * pressure;
-  //delta_time = millis() - previous_time;
-  // if (current_altitude < previous_altitude) {
-  //    deploy();
-  // }
-  //
-  displayAltitude();
-  displayAcceleration();
+  if (millis() > lastTime + 500) {
+    displayAltitude();
+    displayAcceleration();
+    lastTime = millis();
+  }
 }
 
 void displayAcceleration() {
