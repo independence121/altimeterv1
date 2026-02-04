@@ -1,0 +1,81 @@
+(footprint "DPS310"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 -15.7 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "918e26ef-e557-4e67-9572-58d0903c2e80")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "DPS310"
+		(at 0 -14.2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "5e0d6ea4-5d18-4815-9ef4-dc96f4a8f311")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "1208d1af-2105-40b4-bdbf-f2b0f1519961")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4a4f3e7e-cd96-49b9-8f60-1e45056712ef")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_rect
+		(start -12.7 -8.89)
+		(end 12.7 8.89)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "be419345-07ec-4ba2-990e-ba39e771248c")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 -12.7 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "da05f3f4-6422-4c38-b1f0-0ae7e9e96ce3")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(embedded_fonts no)
+)
