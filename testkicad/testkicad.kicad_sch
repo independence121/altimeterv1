@@ -5182,7 +5182,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "IRFZ44NPBF"
+		(property "Value" "IRLZ44NPBF"
 			(at 91.44 80.772 0)
 			(effects
 				(font
@@ -6397,7 +6397,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "IRFZ44NPBF"
+		(property "Value" "IRLZ44NPBF"
 			(at 113.03 85.0899 0)
 			(effects
 				(font
