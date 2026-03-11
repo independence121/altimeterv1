@@ -4764,16 +4764,15 @@
 		)
 	)
 	(gr_rect
-		(start 17.75 49.25)
-		(end 83.6 144.5)
+		(start 17.75 49)
+		(end 83.5 144.5)
 		(stroke
-			(width 0.5)
-			(type solid)
+			(width 0.1)
+			(type default)
 		)
 		(fill no)
-		(layer "F.Cu")
-		(net 38)
-		(uuid "e86388f1-5328-43b8-8372-d45fe2863e9d")
+		(layer "F.SilkS")
+		(uuid "2eb27c49-cee7-4647-a83a-82a6275c88d7")
 	)
 	(gr_rect
 		(start 72.5 84)
