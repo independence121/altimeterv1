@@ -72,9 +72,9 @@
 			(subtractmaskfromsilk no)
 			(outputformat 1)
 			(mirror no)
-			(drillshape 1)
+			(drillshape 0)
 			(scaleselection 1)
-			(outputdirectory "")
+			(outputdirectory "/home/alice/git_repos/altimeterv1/testkicad/printPCB/")
 		)
 	)
 	(net 0 "")
@@ -4764,17 +4764,6 @@
 		)
 	)
 	(gr_rect
-		(start 20 72.75)
-		(end 91.44 144.78)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(fill no)
-		(layer "F.SilkS")
-		(uuid "2eb27c49-cee7-4647-a83a-82a6275c88d7")
-	)
-	(gr_rect
 		(start 70.75 109.13)
 		(end 88.75 135.13)
 		(stroke
@@ -4806,6 +4795,17 @@
 		(fill no)
 		(layer "F.SilkS")
 		(uuid "f745ad69-1a41-445c-9fa5-9854032ebb3d")
+	)
+	(gr_rect
+		(start 20 72.75)
+		(end 91.44 144.78)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "Edge.Cuts")
+		(uuid "2eb27c49-cee7-4647-a83a-82a6275c88d7")
 	)
 	(segment
 		(start 72.75 98.61)
