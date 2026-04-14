@@ -3126,7 +3126,7 @@
 		(at 195.58 104.14)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "72336e23-2cb9-47f9-a24b-6d3f359d0479")
+		(uuid "6d5b1017-8696-4e7e-bf2b-f57d8ec7d345")
 	)
 	(junction
 		(at 78.74 83.82)
@@ -3174,13 +3174,13 @@
 	)
 	(wire
 		(pts
-			(xy 195.58 95.25) (xy 195.58 104.14)
+			(xy 195.58 95.25) (xy 195.58 99.06)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "10e40f2f-703e-4582-a5f7-8d6377ccedf1")
+		(uuid "0d3c4e76-619a-4fdb-98c3-9c02533f9396")
 	)
 	(wire
 		(pts
@@ -3221,6 +3221,16 @@
 			(type default)
 		)
 		(uuid "1749f736-55df-4f7e-9fad-1dd1777a3e58")
+	)
+	(wire
+		(pts
+			(xy 196.85 97.79) (xy 196.85 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "193b638b-c1aa-4a32-a12f-45c109c9367a")
 	)
 	(wire
 		(pts
@@ -3384,6 +3394,16 @@
 	)
 	(wire
 		(pts
+			(xy 196.85 104.14) (xy 195.58 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "41e55f36-0f07-4d00-8193-20eb29bb5581")
+	)
+	(wire
+		(pts
 			(xy 161.29 22.86) (xy 170.18 22.86)
 		)
 		(stroke
@@ -3401,16 +3421,6 @@
 			(type default)
 		)
 		(uuid "44acfa80-0948-489d-96f9-fd12c9f16259")
-	)
-	(wire
-		(pts
-			(xy 196.85 97.79) (xy 196.85 106.68)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4d52ae43-5779-4443-a45e-7a2bcc60deff")
 	)
 	(wire
 		(pts
@@ -3501,6 +3511,16 @@
 			(type default)
 		)
 		(uuid "71ee9bdd-f170-4e70-b60c-de8c0919086f")
+	)
+	(wire
+		(pts
+			(xy 195.58 99.06) (xy 198.12 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "76ecf860-40f9-4022-a139-91dececc6af7")
 	)
 	(wire
 		(pts
@@ -3764,7 +3784,7 @@
 	)
 	(wire
 		(pts
-			(xy 196.85 106.68) (xy 193.04 106.68)
+			(xy 193.04 106.68) (xy 198.12 106.68)
 		)
 		(stroke
 			(width 0)
@@ -3821,6 +3841,16 @@
 			(type default)
 		)
 		(uuid "cb0aef3e-574b-46e5-a484-365a0b2ce83a")
+	)
+	(wire
+		(pts
+			(xy 198.12 99.06) (xy 198.12 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d08c230b-e510-4ff8-b9b0-fce5e7dc7361")
 	)
 	(wire
 		(pts
