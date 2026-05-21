@@ -28,8 +28,6 @@
 #define SEA_LEVEL_HPA 1008.9
 
 #define SAMPLE_TIME_MS 100
-#define SAMPLE_RATE_HZ 100
-#define SAMPLE_INTERVAL_MS (1000 / SAMPLE_RATE_HZ)
 #define BUFFER_SIZE 50
 #define DESCENT_THRESHOLD_M 2.0
 #define DESCENT_SAMPLES 5
@@ -47,43 +45,44 @@ float currentAltitude, initialHeight;
  * MovingAverageBuffer Class
  * Handles smoothing of altitude readings
  * ============================================================================ */
- 
+
 class MovingAverageBuffer {
 private:
-    float readings[BUFFER_SIZE];
-    uint32_t index;
-    uint32_t count;
-    float sum;
- 
+  float readings[BUFFER_SIZE];
+  uint32_t index;
+  uint32_t count;
+  float sum;
+
 public:
-    MovingAverageBuffer() : index(0), count(0), sum(0.0f) {
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-            readings[i] = 0.0f;
-        }
+  MovingAverageBuffer()
+    : index(0), count(0), sum(0.0f) {
+    for (int i = 0; i < BUFFER_SIZE; i++) {
+      readings[i] = 0.0f;
     }
-    
-    float add(float altitude) {
-        // Remove oldest value if buffer is full
-        if (count == BUFFER_SIZE) {
-            sum -= readings[index];
-        } else {
-            count++;
-        }
-        
-        // Add new value
-        readings[index] = altitude;
-        sum += altitude;
-        index = (index + 1) % BUFFER_SIZE;
-        
-        // Return average
-        return sum / count;
+  }
+
+  float add(float altitude) {
+    // Remove oldest value if buffer is full
+    if (count == BUFFER_SIZE) {
+      sum -= readings[index];
+    } else {
+      count++;
     }
-    
-    void reset() {
-        index = 0;
-        count = 0;
-        sum = 0.0f;
-    }
+
+    // Add new value
+    readings[index] = altitude;
+    sum += altitude;
+    index = (index + 1) % BUFFER_SIZE;
+
+    // Return average
+    return sum / count;
+  }
+
+  void reset() {
+    index = 0;
+    count = 0;
+    sum = 0.0f;
+  }
 };
 
 
@@ -99,6 +98,7 @@ private:
   float apogee_m;
   bool apogeeDetected;
   uint32_t apogeeTimestamp_ms;
+  uint32_t lastUpdateTime_ms;
   float descentCount;
   float prevFilteredAltitude;
   MovingAverageBuffer altitudeBuffer;
@@ -108,8 +108,8 @@ private:
      * Calculate vertical velocity from altitude change
      * @return vertical velocity in m/s (positive = ascending, negative = descending)
      */
-  float calculateVelocity(float currentAltitude, float prevAltitude) {
-    return (currentAltitude - prevAltitude) / (SAMPLE_INTERVAL_MS / 1000.0f);
+  float calculateVelocity(float currentAltitude, float prevAltitude, float deltaTime) {
+    return (currentAltitude - prevAltitude) / (SAMPLE_INTERVAL_MS / deltaTime);
   }
 
 public:
@@ -122,6 +122,7 @@ public:
       apogee_m(0.0f),
       apogeeDetected(false),
       apogeeTimestamp_ms(0),
+      lastUpdateTime_ms(0),
       descentCount(0),
       prevFilteredAltitude(0.0f),
       calibrationSamples(0) {
@@ -167,7 +168,7 @@ public:
      * @param timestamp_ms current time in milliseconds
      * @return true if apogee has been detected
      */
-  bool update(float rawAltitude) {
+  bool update(float rawAltitude, uint32_t currentTime_ms) {
     // Skip if not calibrated yet
     if (!isCalibrated()) {
       return false;
@@ -180,7 +181,9 @@ public:
     float filteredAltitude = altitudeBuffer.add(relativeAltitude);
 
     // Calculate vertical velocity
-    float velocity = calculateVelocity(filteredAltitude, prevFilteredAltitude);
+    deltaTime_s = (currentTime_ms - lastUpdateTime_ms) / 1000.0f;
+    lastUpdateTime_ms = currentTime_ms;
+    float velocity = calculateVelocity(filteredAltitude, prevFilteredAltitude, deltaTime_s);
 
     // Track maximum altitude
     if (filteredAltitude > maxAltitude_m) {
@@ -324,7 +327,7 @@ void setup() {
   delay(500);
   accel.setDataRate(ADXL3XX_DATARATE_200_HZ);
   for (int i = 0; i < 10; i++) {
-    bmp.readAltitude(SEA_LEVEL_HPA); // clearing bad initial readings
+    bmp.readAltitude(SEA_LEVEL_HPA);  // clearing bad initial readings
   }
   for (int i = 0; i < GROUND_LEVEL_SAMPLES; i++) {
     float height = bmp.readAltitude(SEA_LEVEL_HPA);
@@ -369,7 +372,9 @@ void loop() {
 
       // Main acquisition loop
       if (millis() - lastSampleTime >= SAMPLE_TIME_MS) {
-        bool apogee_found = detector.update(bmp.readAltitude(SEA_LEVEL_HPA));
+        float height = bmp.readAltitude(SEA_LEVEL_HPA);
+        uint32_t now = millis();
+        bool apogee_found = detector.update(height, now));
         //timestamp_ms += SAMPLE_INTERVAL_MS;
 
         if (apogee_found) {
