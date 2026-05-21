@@ -27,6 +27,7 @@
 #define G 9.81
 #define SEA_LEVEL_HPA 1008.9
 
+#define SAMPLE_TIME_MS 100
 #define SAMPLE_RATE_HZ 100
 #define SAMPLE_INTERVAL_MS (1000 / SAMPLE_RATE_HZ)
 #define BUFFER_SIZE 50
@@ -35,7 +36,7 @@
 #define GROUND_LEVEL_SAMPLES 100
 
 
-int launchTime, lastTime;
+int launchTime, lastSampleTime;
 int accelCounter;
 int state;
 float x_offset, y_offset, z_offset;
@@ -278,9 +279,10 @@ public:
 char maxAltitudeStr[15];
 char initialHeightStr[15];
 
-Adafruit_BMP280 bmp;
+Adafruit_BMP3XX bmp;
 Adafruit_ADXL375 accel = Adafruit_ADXL375(12345);
 RFM69 radio(CS_PIN, IRQ_PIN, true);
+ApogeeDetector detector;
 
 void setup() {
   pinMode(DROGUE, OUTPUT);
@@ -321,7 +323,7 @@ void setup() {
   transmitText("Accel done...calibrating");
   delay(500);
   accel.setDataRate(ADXL3XX_DATARATE_200_HZ);
-  for (int i = 0, i < 10; i++) {
+  for (int i = 0; i < 10; i++) {
     bmp.readAltitude(SEA_LEVEL_HPA); // clearing bad initial readings
   }
   for (int i = 0; i < GROUND_LEVEL_SAMPLES; i++) {
@@ -331,9 +333,7 @@ void setup() {
   initialHeight = detector.getInitialAltitude();
   transmitText("Initial height found...");
   delay(500);
-  lastTime = 0;
   accelCounter = 0;
-  potentialMaxHeight = 0;
   calibrate();
   transmitText("Ready for flight! Initial Height:");
   delay(500);
@@ -368,7 +368,7 @@ void loop() {
     case 2:  // coasting (apogee detection)
 
       // Main acquisition loop
-      if (millis - lastSampleTime >= SAMPLE_TIME_MS) {
+      if (millis() - lastSampleTime >= SAMPLE_TIME_MS) {
         bool apogee_found = detector.update(bmp.readAltitude(SEA_LEVEL_HPA));
         //timestamp_ms += SAMPLE_INTERVAL_MS;
 
@@ -380,7 +380,7 @@ void loop() {
       }
       break;
     case 3:  //drogue
-      if (millis - lastSampleTime >= SAMPLE_TIME_MS) {
+      if (millis() - lastSampleTime >= SAMPLE_TIME_MS) {
         detector.update(bmp.readAltitude(SEA_LEVEL_HPA));
         currentAltitude = detector.getCurrentAltitude();
 
@@ -418,7 +418,7 @@ float getVerticalAccel() {
 
 
 void saveAltitude() {
-  maxHeight = detector.getMaxAltitude();
+  float maxHeight = detector.getMaxAltitude();
   floatToString(maxHeight, maxAltitudeStr);
   transmitText("Max altitude: ");
   transmitText(maxAltitudeStr);
