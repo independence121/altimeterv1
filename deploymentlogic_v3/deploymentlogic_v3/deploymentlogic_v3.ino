@@ -365,6 +365,13 @@ float getAccel() {
   return a_mag;
 }
 
+float getVerticalAccel() {
+  sensors_event_t event;
+  accel.getEvent(&event);
+  float y = event.acceleration.y - y_offset;
+  return y;
+}
+
 
 void saveAltitude() {
   maxHeight = detector.getMaxAltitude();
