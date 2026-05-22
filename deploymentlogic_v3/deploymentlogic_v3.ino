@@ -109,7 +109,7 @@ private:
      * @return vertical velocity in m/s (positive = ascending, negative = descending)
      */
   float calculateVelocity(float currentAltitude, float prevAltitude, float deltaTime) {
-    return (currentAltitude - prevAltitude) / (SAMPLE_INTERVAL_MS / deltaTime);
+    return (currentAltitude - prevAltitude) / (deltaTime);
   }
 
 public:
@@ -181,7 +181,7 @@ public:
     float filteredAltitude = altitudeBuffer.add(relativeAltitude);
 
     // Calculate vertical velocity
-    deltaTime_s = (currentTime_ms - lastUpdateTime_ms) / 1000.0f;
+    float deltaTime_s = (currentTime_ms - lastUpdateTime_ms) / 1000.0f;
     lastUpdateTime_ms = currentTime_ms;
     float velocity = calculateVelocity(filteredAltitude, prevFilteredAltitude, deltaTime_s);
 
@@ -374,8 +374,7 @@ void loop() {
       if (millis() - lastSampleTime >= SAMPLE_TIME_MS) {
         float height = bmp.readAltitude(SEA_LEVEL_HPA);
         uint32_t now = millis();
-        bool apogee_found = detector.update(height, now));
-        //timestamp_ms += SAMPLE_INTERVAL_MS;
+        bool apogee_found = detector.update(height, now);
 
         if (apogee_found) {
           deployDrogue();
@@ -386,10 +385,10 @@ void loop() {
       break;
     case 3:  //drogue
       if (millis() - lastSampleTime >= SAMPLE_TIME_MS) {
-        detector.update(bmp.readAltitude(SEA_LEVEL_HPA));
+        uint32_t now = millis();
+        detector.update(bmp.readAltitude(SEA_LEVEL_HPA), now);
         currentAltitude = detector.getCurrentAltitude();
 
-        // realAltitude = bmp.readAltitude(SEA_LEVEL_HPA) - initialHeight;
         if (currentAltitude < 244) {
           deployMain();
           saveAltitude();
